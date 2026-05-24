@@ -434,3 +434,72 @@ function setLang(lang) {
 }
 
 document.addEventListener('DOMContentLoaded', () => setLang('fr'));
+
+// ── Patch : ajout des clés manquantes pour toutes les langues ──
+(function() {
+  const extra = {
+    fr: {
+      prox_h1: "Sites historiques", prox_h2: "Restaurants & cafés", prox_h3: "Commerces", prox_h4: "Plages", prox_h5: "Transports",
+      rev1_text: "« La chambre était d'une propreté impeccable, le personnel accueillant et serviable, et l'emplacement calme et paisible. Je choisirais sans hésiter cet hôtel à nouveau. »",
+      rev1_date: "2 nuits · Avril 2026",
+      rev2_text: "« Idéalement situé, tout près de l'entrée de Kaleiçi. Il a dépassé mes attentes : très propre, chambre spacieuse, charmant jardin. Si je devais y retourner, je choisirais à nouveau cet hôtel. »",
+      rev2_date: "1 nuit · Avril 2026",
+      rev3_text: "« Un établissement exceptionnel qui saura vous satisfaire à tous égards. »",
+      rev3_date: "5 nuits · Mai 2026",
+      rev4_text: "« Belle architecture, chambres propres, personnel extrêmement poli et serviable. La salle de bain est d'une propreté impeccable. L'eau chaude est disponible à volonté. »",
+      rev4_date: "1 nuit · Décembre 2025",
+      rev5_text: "« Emplacement magnifique, niché au cœur de demeures historiques. Chambres très propres et spacieuses. Personnel très poli et attentionné. Je le recommande vivement. »",
+      rev5_date: "1 nuit · Octobre 2025",
+      rev6_text: "« Les chambres sont propres et l'hôtel est très bien situé. »",
+      rev6_date: "4 nuits · Août 2025",
+    },
+    en: {
+      prox_h1: "Historic sites", prox_h2: "Restaurants & cafés", prox_h3: "Shops", prox_h4: "Beaches", prox_h5: "Transport",
+      rev1_text: "« The room was spotlessly clean, the staff welcoming and helpful, and the location calm and peaceful. I would not hesitate to choose this hotel again. »",
+      rev1_date: "2 nights · April 2026",
+      rev2_text: "« Ideally located, very close to the entrance of Kaleiçi, making getting around very easy. It exceeded my expectations: very clean, and the room was spacious. The hotel has a charming garden. I would choose it again. »",
+      rev2_date: "1 night · April 2026",
+      rev3_text: "« An exceptional establishment that will satisfy you in every way. »",
+      rev3_date: "5 nights · May 2026",
+      rev4_text: "« The hotel has beautiful architecture. The rooms are clean. The staff is extremely polite, kind and helpful. The bathroom is spotlessly clean. Hot water is available at all times. »",
+      rev4_date: "1 night · December 2025",
+      rev5_text: "« The location is magnificent, nestled in the heart of historic and authentic houses. The rooms are very clean and spacious. The staff is very polite and attentive. Highly recommended. »",
+      rev5_date: "1 night · October 2025",
+      rev6_text: "« The rooms are clean and the hotel is very well located. »",
+      rev6_date: "4 nights · August 2025",
+    },
+    tr: {
+      prox_h1: "Tarihi yerler", prox_h2: "Restoranlar & kafeler", prox_h3: "Marketler", prox_h4: "Plajlar", prox_h5: "Ulaşım",
+      rev1_text: "« Oda tertemizdi, personel sıcakkanlı ve yardımseverdi, konum sakin ve huzurluydu. Geri dönseydim bu oteli tereddütsüz seçerdim. »",
+      rev1_date: "2 gece · Nisan 2026",
+      rev2_text: "« Otel, Kaleiçi girişine çok yakın, ideal bir konumdaydı. Beklentilerimi aştı: çok temiz ve oda geniş, bahçesi büyüleyici. Geri dönseydim yine bu oteli seçerdim. »",
+      rev2_date: "1 gece · Nisan 2026",
+      rev3_text: "« Her açıdan sizi memnun edecek olağanüstü bir tesis. »",
+      rev3_date: "5 gece · Mayıs 2026",
+      rev4_text: "« Otelin güzel bir mimarisi var. Odalar temiz. Personel son derece nazik, güler yüzlü ve yardımsever. Banyo pırıl pırıl temiz. Sıcak su her zaman mevcut. »",
+      rev4_date: "1 gece · Aralık 2025",
+      rev5_text: "« Konum muhteşem, tarihi ve otantik evlerin kalbinde. Odalar çok temiz ve yeterince geniş. Personel çok nazik ve ilgili. Kesinlikle tavsiye ediyorum. »",
+      rev5_date: "1 gece · Ekim 2025",
+      rev6_text: "« Odalar oldukça temiz ve otel çok iyi konumda. »",
+      rev6_date: "4 gece · Ağustos 2025",
+    },
+    ru: {
+      prox_h1: "Исторические места", prox_h2: "Рестораны и кафе", prox_h3: "Магазины", prox_h4: "Пляжи", prox_h5: "Транспорт",
+      rev1_text: "« Номер был безупречно чист, персонал приветлив и услужлив, расположение спокойное и умиротворённое. Я бы не задумываясь выбрала этот отель снова. »",
+      rev1_date: "2 ночи · Апрель 2026",
+      rev2_text: "« Отель расположен идеально — совсем рядом со входом в Калейчи. Он превзошёл мои ожидания: очень чистый, номера просторные, очаровательный сад. Я бы снова выбрала этот отель. »",
+      rev2_date: "1 ночь · Апрель 2026",
+      rev3_text: "« Исключительное заведение, которое удовлетворит вас во всех отношениях. »",
+      rev3_date: "5 ночей · Май 2026",
+      rev4_text: "« У отеля красивая архитектура. Номера чистые. Персонал чрезвычайно вежливый, добрый и услужливый. В ванной комнате безупречная чистота. Горячая вода доступна в любое время. »",
+      rev4_date: "1 ночь · Декабрь 2025",
+      rev5_text: "« Расположение великолепное — в самом сердце исторических домов. Номера очень чистые и достаточно просторные. Персонал очень вежливый и внимательный. Настоятельно рекомендую. »",
+      rev5_date: "1 ночь · Октябрь 2025",
+      rev6_text: "« Номера довольно чистые, и отель очень удачно расположен. »",
+      rev6_date: "4 ночи · Август 2025",
+    },
+  };
+  Object.keys(extra).forEach(lang => {
+    if (translations[lang]) Object.assign(translations[lang], extra[lang]);
+  });
+})();
