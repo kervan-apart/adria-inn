@@ -306,8 +306,6 @@ tr: {
   footer_droits: "Tüm hakları saklıdır",
 },
 
-,
-
 ru: {
   hero_sub: "Старый город Анталья · Калейчи",
   hero_tag: "Элегантное убежище в сердце истории",
