@@ -6,14 +6,16 @@
   <title>Adria Inn – Vieille ville d'Antalya, Kaleiçi</title>
   <meta name="description" content="Hôtel de charme au cœur de Kaleiçi, vieille ville historique d'Antalya. 15 chambres modernes, emplacement exceptionnel, à 400 m de la plage." />
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&family=Orbitron:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
 
   <!-- ========== NAVIGATION ========== -->
   <header id="header">
     <div class="nav-inner">
-      <a href="#accueil" class="logo">Adria Inn</a>
+      <a href="#accueil" class="logo">
+        <img src="images/hotel/logo-adria.png" alt="Adria Inn" class="logo-img" />
+      </a>
       <nav>
         <a href="#presentation">L'hôtel</a>
         <a href="#chambres">Chambres</a>
@@ -37,6 +39,7 @@
   <section id="accueil" class="hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
+      <img src="images/hotel/logo-adria.png" alt="Adria Inn" class="hero-logo" />
       <p class="hero-sub" data-i18n="hero_sub">Vieille ville d'Antalya · Kaleiçi</p>
       <h1 class="hero-title">Adria Inn</h1>
       <p class="hero-tag" data-i18n="hero_tag">Un refuge élégant au cœur de l'histoire</p>
@@ -70,6 +73,9 @@
           <div class="hotel-slide"><img src="images/hotel/cour-parasol.png" alt="Terrasse" /></div>
           <div class="hotel-slide"><img src="images/hotel/couloir1.png" alt="Couloir" /></div>
           <div class="hotel-slide"><img src="images/hotel/couloir2.png" alt="Couloir étage" /></div>
+          <div class="hotel-slide"><img src="images/hotel/vue-rue1.png" alt="Rue de Kaleiçi" /></div>
+          <div class="hotel-slide"><img src="images/hotel/fenetre1.png" alt="Vue depuis la fenêtre" /></div>
+          <div class="hotel-slide"><img src="images/hotel/vue-kaleici.png" alt="Vue sur Kaleiçi" /></div>
         </div>
       </div>
     </div>
@@ -150,7 +156,7 @@
           <div class="room-thumbs">
             <img src="images/chambres/double-02.png" alt="" />
             <img src="images/chambres/double-sdb1.png" alt="" />
-            <img src="images/chambres/double-entree.png" alt="" />
+            <img src="images/hotel/vue-rue1.png" alt="" />
           </div>
         </div>
         <div class="room-info">
@@ -189,6 +195,9 @@
             <img src="images/chambres/triple-deluxe-04.png" alt="" />
             <img src="images/chambres/triple-deluxe-sdb1.png" alt="" />
             <img src="images/chambres/triple-deluxe-07.png" alt="" />
+            <img src="images/chambres/triple-deluxe-03.png" alt="" />
+            <img src="images/chambres/triple-deluxe-05.png" alt="" />
+            <img src="images/chambres/triple-deluxe-sdb2.png" alt="" />
           </div>
         </div>
         <div class="room-info">
@@ -265,6 +274,9 @@
             <img src="images/chambres/familiale-04.png" alt="" />
             <img src="images/chambres/familiale-05.png" alt="" />
             <img src="images/chambres/familiale-sdb.png" alt="" />
+            <img src="images/chambres/familiale-02.png" alt="" />
+            <img src="images/hotel/vue-kaleici.png" alt="" />
+            <img src="images/hotel/fenetre2.png" alt="" />
           </div>
         </div>
         <div class="room-info">
@@ -542,15 +554,7 @@
         <div class="carte-touristique">
           <img src="images/hotel/carte-kaleici.png" alt="Carte de Kaleiçi – Adria Inn" />
         </div>
-        <div class="map-embed">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3189.485!2d30.707!3d36.882!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c391a7cd4e1ecb%3A0x47f3e2b4e2bcc85b!2sKalei%C3%A7i%2C%20Antalya!5e0!3m2!1sfr!2str!4v1680000000"
-            width="100%" height="200"
-            style="border:0;border-radius:6px;"
-            allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
-        </div>
+        <a href="https://maps.google.com/?q=Mescit+Sokak+23/1+Kaleici+Antalya" target="_blank" class="btn-gmaps" data-i18n="gmaps_btn">📍 Voir sur Google Maps</a>
       </div>
       <div class="form-col">
         <form id="res-form" onsubmit="sendForm(event)">
@@ -608,7 +612,7 @@
   <!-- ========== FOOTER ========== -->
   <footer class="footer">
     <div class="container footer-inner">
-      <p class="footer-logo">Adria Inn</p>
+      <img src="images/hotel/logo-adria.png" alt="Adria Inn" class="footer-logo-img" />
       <p class="footer-address">Mescit Sokak N°23/1 · Kaleiçi · Antalya · Turquie</p>
       <p class="footer-copy">© <span id="year"></span> Adria Inn — <span data-i18n="footer_droits">Tous droits réservés</span></p>
     </div>
