@@ -163,17 +163,25 @@ nav a:hover { color: var(--terra-lt) !important; }
   gap: 5px;
   font-size: 0.72rem;
   color: rgba(255,255,255,0.5);
+  background: rgba(0,0,0,0.35);
+  padding: 6px 12px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
 }
-#header.scrolled .lang-switcher { color: var(--text-lt); }
+#header.scrolled .lang-switcher {
+  color: var(--text-lt);
+  background: transparent;
+  padding: 0;
+}
 
 .lang-btn {
   background: none;
   border: none;
   cursor: pointer;
   font-family: 'Jost', sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.92);
   padding: 2px 3px;
   transition: color var(--ease);
 }
