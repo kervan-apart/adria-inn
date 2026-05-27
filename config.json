@@ -1,9 +1,9 @@
 {
   "prix": {
-    "double": 70,
-    "triple_deluxe": 85,
-    "triple_balcon": 90,
-    "familiale": 95
+    "double": 75,
+    "triple_deluxe": 95,
+    "triple_balcon": 105,
+    "familiale": 120
   },
   "photos": {
     "double": "images/chambres/double-01.png",
