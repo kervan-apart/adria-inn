@@ -519,6 +519,16 @@
     <div class="section-title"><span class="icon">🖼</span> Photos des chambres</div>
     <div class="photos-section" id="photos-section"></div>
 
+
+    <!-- AVIS CLIENTS -->
+    <div class="section-title"><span class="icon">⭐</span> Avis clients</div>
+    <div id="reviews-section" style="margin-bottom:48px">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn-generate" onclick="addReview()" style="padding:10px 22px;font-size:0.82rem">＋ Ajouter un avis</button>
+      </div>
+      <div id="reviews-list"></div>
+    </div>
+
     <!-- EXPORT JSON -->
     <div class="section-title"><span class="icon">💾</span> Sauvegarder les modifications</div>
     <div class="export-section">
@@ -587,6 +597,132 @@
     },
   ];
 
+
+  // ── Avis clients ──
+  const reviews = [
+    { author: 'Begimai', stars: 5, text: '« La chambre était d'une propreté impeccable, le personnel accueillant et serviable, et l'emplacement calme et paisible. Je choisirais sans hésiter cet hôtel à nouveau. »', stay: '2 nuits · Avril 2026' },
+    { author: 'Buket',   stars: 5, text: '« Idéalement situé, tout près de l'entrée de Kaleiçi. Il a dépassé mes attentes : très propre, chambre spacieuse, charmant jardin. Si je devais y retourner, je choisirais à nouveau cet hôtel. »', stay: '1 nuit · Avril 2026' },
+    { author: 'Mert',    stars: 5, text: '« Un établissement exceptionnel qui saura vous satisfaire à tous égards. »', stay: '5 nuits · Mai 2026' },
+    { author: 'Leyla',   stars: 5, text: '« Belle architecture, chambres propres, personnel extrêmement poli et serviable. La salle de bain est d'une propreté impeccable. L'eau chaude est disponible à volonté. »', stay: '1 nuit · Décembre 2025' },
+    { author: 'Ismail',  stars: 5, text: '« Emplacement magnifique, niché au cœur de demeures historiques. Chambres très propres et spacieuses. Personnel très poli et attentionné. Je le recommande vivement. »', stay: '1 nuit · Octobre 2025' },
+    { author: 'Izzet',   stars: 4, text: '« Les chambres sont propres et l'hôtel est très bien situé. »', stay: '4 nuits · Août 2025' },
+  ];
+
+  function buildReviews() {
+    const list = document.getElementById('reviews-list');
+    list.innerHTML = '';
+    if (reviews.length === 0) {
+      list.innerHTML = '<p style="color:#aaa;text-align:center;padding:24px">Aucun avis pour le moment.</p>';
+      return;
+    }
+    reviews.forEach((rev, i) => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:#fff;border-radius:12px;padding:20px 24px;margin-bottom:14px;box-shadow:0 2px 12px rgba(139,69,19,0.08);display:flex;gap:20px;align-items:flex-start';
+      const stars = '★'.repeat(rev.stars) + '☆'.repeat(5 - rev.stars);
+      card.innerHTML = `
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+            <strong style="font-size:1rem;color:#1a1008">${rev.author}</strong>
+            <span style="color:#C9A84C;font-size:1.1rem">${stars}</span>
+            <span style="color:#aaa;font-size:0.8rem">${rev.stay}</span>
+          </div>
+          <p id="rev-text-${i}" style="color:#444;font-size:0.9rem;line-height:1.6">${rev.text}</p>
+          <div id="rev-edit-${i}" style="display:none;margin-top:10px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">
+              <div>
+                <label style="font-size:0.75rem;color:#999;display:block;margin-bottom:4px">Auteur</label>
+                <input id="edit-author-${i}" value="${rev.author}" style="width:100%;padding:8px 10px;border:1.5px solid #e8d5b7;border-radius:6px;font-family:Jost,sans-serif" />
+              </div>
+              <div>
+                <label style="font-size:0.75rem;color:#999;display:block;margin-bottom:4px">Séjour</label>
+                <input id="edit-stay-${i}" value="${rev.stay}" style="width:100%;padding:8px 10px;border:1.5px solid #e8d5b7;border-radius:6px;font-family:Jost,sans-serif" />
+              </div>
+            </div>
+            <div style="margin-bottom:8px">
+              <label style="font-size:0.75rem;color:#999;display:block;margin-bottom:4px">Note (étoiles)</label>
+              <select id="edit-stars-${i}" style="padding:8px 10px;border:1.5px solid #e8d5b7;border-radius:6px;font-family:Jost,sans-serif">
+                ${[5,4,3,2,1].map(n => `<option value="${n}" ${n===rev.stars?'selected':''}>${'★'.repeat(n)}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.75rem;color:#999;display:block;margin-bottom:4px">Texte de l'avis</label>
+              <textarea id="edit-text-${i}" rows="3" style="width:100%;padding:8px 10px;border:1.5px solid #e8d5b7;border-radius:6px;font-family:Jost,sans-serif;resize:vertical">${rev.text}</textarea>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          <button class="btn-edit" id="btn-rev-edit-${i}" onclick="editReview(${i})">Modifier</button>
+          <button class="btn-save" id="btn-rev-save-${i}" onclick="saveReview(${i})" style="display:none">Enregistrer</button>
+          <button class="btn-cancel" id="btn-rev-cancel-${i}" onclick="cancelReview(${i})" style="display:none">Annuler</button>
+          <button onclick="deleteReview(${i})" style="padding:7px 16px;border-radius:6px;border:1.5px solid #e74c3c;background:none;color:#e74c3c;font-family:Jost,sans-serif;font-size:0.8rem;cursor:pointer" onmouseover="this.style.background='#e74c3c';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#e74c3c'">Supprimer</button>
+          <button onclick="moveReview(${i},-1)" title="Monter" style="padding:5px 12px;border-radius:6px;border:1.5px solid #ccc;background:none;color:#888;cursor:pointer;font-size:0.9rem">↑</button>
+          <button onclick="moveReview(${i},1)" title="Descendre" style="padding:5px 12px;border-radius:6px;border:1.5px solid #ccc;background:none;color:#888;cursor:pointer;font-size:0.9rem">↓</button>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function editReview(i) {
+    document.getElementById('rev-text-' + i).style.display = 'none';
+    document.getElementById('rev-edit-' + i).style.display = 'block';
+    document.getElementById('btn-rev-edit-' + i).style.display = 'none';
+    document.getElementById('btn-rev-save-' + i).style.display = 'inline-block';
+    document.getElementById('btn-rev-cancel-' + i).style.display = 'inline-block';
+  }
+
+  function saveReview(i) {
+    reviews[i].author = document.getElementById('edit-author-' + i).value.trim();
+    reviews[i].stay   = document.getElementById('edit-stay-'   + i).value.trim();
+    reviews[i].stars  = parseInt(document.getElementById('edit-stars-' + i).value);
+    reviews[i].text   = document.getElementById('edit-text-'  + i).value.trim();
+    buildReviews();
+  }
+
+  function cancelReview(i) {
+    document.getElementById('rev-text-' + i).style.display = 'block';
+    document.getElementById('rev-edit-' + i).style.display = 'none';
+    document.getElementById('btn-rev-edit-' + i).style.display = 'inline-block';
+    document.getElementById('btn-rev-save-' + i).style.display = 'none';
+    document.getElementById('btn-rev-cancel-' + i).style.display = 'none';
+  }
+
+  function deleteReview(i) {
+    if (!confirm('Supprimer cet avis ?')) return;
+    reviews.splice(i, 1);
+    buildReviews();
+  }
+
+  function addReview() {
+    reviews.unshift({ author: 'Nouveau client', stars: 5, text: 'Texte de l'avis...', stay: '1 nuit · Juin 2026' });
+    buildReviews();
+    editReview(0);
+  }
+
+  function moveReview(i, dir) {
+    const j = i + dir;
+    if (j < 0 || j >= reviews.length) return;
+    [reviews[i], reviews[j]] = [reviews[j], reviews[i]];
+    buildReviews();
+  }
+
+  // Override generateJSON to include reviews
+  const _origGenerateJSON = generateJSON;
+  generateJSON = function() {
+    const config = { prix: {}, photos: {}, reviews: [] };
+    chambres.forEach(ch => {
+      config.prix[ch.id] = ch.prix;
+      config.photos[ch.id] = ch.mainPhoto;
+    });
+    config.reviews = reviews.map(r => ({
+      author: r.author, stars: r.stars, text: r.text, stay: r.stay
+    }));
+    const json = JSON.stringify(config, null, 2);
+    const el = document.getElementById('json-output');
+    el.textContent = json;
+    el.style.display = 'block';
+    document.getElementById('btn-copy').style.display = 'inline-block';
+  };
   // ── Login ──
   function checkLogin() {
     const val = document.getElementById('pwd-input').value;
@@ -595,6 +731,7 @@
       document.getElementById('admin-panel').style.display = 'block';
       buildTarifs();
       buildPhotos();
+      buildReviews();
     } else {
       document.getElementById('login-err').style.display = 'block';
     }
