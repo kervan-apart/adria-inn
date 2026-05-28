@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adria Inn — Interface d'administration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --terra: #8B4513;
+      --gold: #C9A84C;
+      --cream: #F8F4EE;
+      --dark: #1a1008;
+      --sand: #E8D5B7;
+      --white: #ffffff;
+      --danger: #c0392b;
+      --success: #27ae60;
+      --shadow: 0 4px 24px rgba(139,69,19,0.10);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--dark) 0%, #3d1f0a 100%);
+    }
+    .login-box {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 52px 48px;
+      width: 380px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .login-box .logo-txt {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--terra);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .login-box .sub {
+      font-size: 0.8rem;
+      color: #888;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+    .login-box input[type="password"] {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid var(--sand);
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: 'Jost', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 16px;
+    }
+    .login-box input[type="password"]:focus { border-color: var(--terra); }
+    .login-box .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: var(--terra);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .login-box .btn-login:hover { background: #6b3410; }
+    .login-box .err {
+      color: var(--danger);
+      font-size: 0.85rem;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* ── ADMIN PANEL ── */
+    #admin-panel { display: none; }
+
+    .topbar {
+      background: var(--dark);
+      color: #fff;
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar .brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+    }
+    .topbar .badge {
+      font-size: 0.75rem;
+      color: #aaa;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .btn-logout {
+      background: none;
+      border: 1px solid #555;
+      color: #aaa;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .btn-logout:hover { border-color: #aaa; color: #fff; }
+
+    .main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      color: var(--terra);
+      border-bottom: 2px solid var(--sand);
+      padding-bottom: 10px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title .icon { font-size: 1.3rem; }
+
+    /* ── TARIFS TABLE ── */
+    .tarifs-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      margin-bottom: 48px;
+    }
+    .tarifs-table thead {
+      background: var(--dark);
+      color: var(--gold);
+    }
+    .tarifs-table thead th {
+      padding: 16px 20px;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      text-align: left;
+    }
+    .tarifs-table tbody tr {
+      border-bottom: 1px solid #f0e8dc;
+      transition: background 0.15s;
+    }
+    .tarifs-table tbody tr:last-child { border-bottom: none; }
+    .tarifs-table tbody tr:hover { background: #fdf8f3; }
+    .tarifs-table td {
+      padding: 18px 20px;
+      font-size: 0.95rem;
+      vertical-align: middle;
+    }
+    .tarifs-table .chambre-name {
+      font-weight: 500;
+      color: var(--dark);
+    }
+    .tarifs-table .prix-display {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--terra);
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .prix-input {
+      width: 100px;
+      padding: 8px 12px;
+      border: 1.5px solid var(--sand);
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: 'Jost', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+      display: none;
+    }
+    .prix-input:focus { border-color: var(--terra); }
+    .btn-edit {
+      padding: 7px 16px;
+      border-radius: 6px;
+      border: 1.5px solid var(--terra);
+      background: none;
+      color: var(--terra);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-edit:hover { background: var(--terra); color: #fff; }
+    .btn-save {
+      padding: 7px 16px;
+      border-radius: 6px;
+      border: none;
+      background: var(--success);
+      color: #fff;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: none;
+      margin-right: 8px;
+    }
+    .btn-cancel {
+      padding: 7px 16px;
+      border-radius: 6px;
+      border: 1.5px solid #ccc;
+      background: none;
+      color: #888;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* ── PHOTOS GRID ── */
+    .photos-section { margin-bottom: 48px; }
+    .chambre-block {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+    }
+    .chambre-header {
+      background: var(--dark);
+      color: var(--gold);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .chambre-header h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.06em;
+    }
+    .chambre-header .tag {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #888;
+    }
+    .chambre-body { padding: 24px; }
+
+    .photos-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+    /* Photo principale */
+    .main-photo-zone {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #f0e8dc;
+    }
+    .main-photo-frame {
+      width: 200px;
+      height: 140px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2.5px solid var(--gold);
+      position: relative;
+    }
+    .main-photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .main-photo-frame .badge-main {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: var(--gold);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .main-photo-info { flex: 1; }
+    .main-photo-info .filename {
+      font-size: 0.85rem;
+      color: #666;
+      font-family: monospace;
+      background: #f5f5f5;
+      padding: 6px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .main-photo-info .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* Autres photos */
+    .other-photos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 14px;
+    }
+    .photo-thumb {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid #eee;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .photo-thumb:hover { border-color: var(--terra); transform: translateY(-2px); }
+    .photo-thumb.is-main { border-color: var(--gold); }
+    .photo-thumb img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      display: block;
+    }
+    .photo-thumb .thumb-name {
+      font-size: 0.68rem;
+      color: #777;
+      padding: 5px 7px;
+      background: #fafafa;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .photo-thumb .thumb-actions {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      display: flex;
+      gap: 3px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .photo-thumb:hover .thumb-actions { opacity: 1; }
+    .btn-set-main {
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      padding: 3px 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* Bouton ajouter photo */
+    .btn-add-photo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: 1.5px dashed var(--sand);
+      border-radius: 8px;
+      background: none;
+      color: #aaa;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 14px;
+      width: 100%;
+    }
+    .btn-add-photo:hover { border-color: var(--terra); color: var(--terra); }
+
+    /* ── JSON EXPORT ── */
+    .export-section {
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    .export-section p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .json-output {
+      background: #1a1a2e;
+      color: #a8e6cf;
+      font-family: monospace;
+      font-size: 0.82rem;
+      padding: 20px;
+      border-radius: 8px;
+      white-space: pre;
+      overflow-x: auto;
+      margin-bottom: 16px;
+      display: none;
+      line-height: 1.6;
+    }
+    .btn-generate {
+      padding: 14px 32px;
+      background: var(--terra);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-right: 12px;
+    }
+    .btn-generate:hover { background: #6b3410; }
+    .btn-copy {
+      padding: 14px 28px;
+      background: none;
+      border: 1.5px solid var(--terra);
+      color: var(--terra);
+      border-radius: 8px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: none;
+    }
+    .btn-copy:hover { background: var(--terra); color: #fff; }
+    .copy-ok {
+      display: inline-block;
+      color: var(--success);
+      font-size: 0.85rem;
+      margin-left: 12px;
+      display: none;
+    }
+
+    /* ── NOTICE ── */
+    .notice {
+      background: #fff8eb;
+      border: 1px solid #f0d090;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      color: #7a5c10;
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+
+    .sep { height: 40px; }
+  </style>
+</head>
+<body>
+
+<!-- ========== LOGIN ========== -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo-txt">Adria Inn</div>
+    <div class="sub">Interface d'administration</div>
+    <input type="password" id="pwd-input" placeholder="Mot de passe" />
+    <button class="btn-login" onclick="checkLogin()">Accéder</button>
+    <div class="err" id="login-err">Mot de passe incorrect</div>
+  </div>
+</div>
+
+<!-- ========== ADMIN PANEL ========== -->
+<div id="admin-panel">
+
+  <div class="topbar">
+    <div>
+      <div class="brand">Adria Inn</div>
+      <div class="badge">Interface d'administration</div>
+    </div>
+    <button class="btn-logout" onclick="logout()">Déconnexion</button>
+  </div>
+
+  <div class="main">
+
+    <!-- TARIFS -->
+    <div class="section-title"><span class="icon">💶</span> Tarifs des chambres</div>
+    <table class="tarifs-table">
+      <thead>
+        <tr>
+          <th>Catégorie de chambre</th>
+          <th>Surface</th>
+          <th>Tarif / nuit</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tarifs-body"></tbody>
+    </table>
+
+    <!-- PHOTOS -->
+    <div class="section-title"><span class="icon">🖼</span> Photos des chambres</div>
+    <div class="photos-section" id="photos-section"></div>
+
+
+    <!-- AVIS CLIENTS -->
+    <div class="section-title"><span class="icon">⭐</span> Avis clients</div>
+    <div id="reviews-section" style="margin-bottom:48px">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn-generate" onclick="addReview()" style="padding:10px 22px;font-size:0.82rem">＋ Ajouter un avis</button>
+      </div>
+      <div id="reviews-list"></div>
+    </div>
+
+    <!-- EXPORT JSON -->
+    <div class="section-title"><span class="icon">💾</span> Sauvegarder les modifications</div>
+    <div class="export-section">
+      <p>Cliquez sur <strong>Générer le fichier JSON</strong> pour créer le fichier de configuration à jour. Copiez ensuite le texte obtenu et remplacez le contenu du fichier <code>config.json</code> sur GitHub.</p>
+      <button class="btn-generate" onclick="generateJSON()">Générer le fichier JSON</button>
+      <button class="btn-copy" id="btn-copy" onclick="copyJSON()">Copier</button>
+      <span class="copy-ok" id="copy-ok">✓ Copié !</span>
+      <div class="json-output" id="json-output"></div>
+      <div class="notice">
+        ⚠️ Après avoir mis à jour <code>config.json</code> sur GitHub, patientez 1 à 2 minutes puis actualisez le site Adria Inn — les modifications apparaîtront automatiquement.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ── Mot de passe ──
+  const PASSWORD = 'adria2024';
+
+  // ── Données ──
+  const chambres = [
+    { id: 'double',        nom: 'Chambre Double Supérieure', surface: '13 m²', prix: 70,
+      mainPhoto: 'images/chambres/double-01.png',
+      photos: [
+        'images/chambres/double-01.png',
+        'images/chambres/double-02.png',
+        'images/chambres/double-03.png',
+        'images/chambres/double-sdb1.png',
+        'images/chambres/double-sdb2.png',
+        'images/chambres/double-entree.png',
+      ]
+    },
+    { id: 'triple_deluxe', nom: 'Chambre Triple Deluxe',     surface: '23 m²', prix: 85,
+      mainPhoto: 'images/chambres/triple-deluxe-02.png',
+      photos: [
+        'images/chambres/triple-deluxe-02.png',
+        'images/chambres/triple-deluxe-03.png',
+        'images/chambres/triple-deluxe-04.png',
+        'images/chambres/triple-deluxe-05.png',
+        'images/chambres/triple-deluxe-07.png',
+        'images/chambres/triple-deluxe-sdb1.png',
+        'images/chambres/triple-deluxe-sdb2.png',
+      ]
+    },
+    { id: 'triple_balcon', nom: 'Chambre Triple avec Balcon', surface: '25 m²', prix: 90,
+      mainPhoto: 'images/chambres/balcon-01.png',
+      photos: [
+        'images/chambres/balcon-01.png',
+        'images/chambres/balcon-02.png',
+        'images/chambres/balcon-03.png',
+        'images/chambres/balcon-04.png',
+        'images/chambres/balcon-terrasse.png',
+        'images/chambres/balcon-sdb.png',
+      ]
+    },
+    { id: 'familiale',     nom: 'Chambre Quadruple Familiale', surface: '30 m²', prix: 95,
+      mainPhoto: 'images/chambres/familiale-01.png',
+      photos: [
+        'images/chambres/familiale-01.png',
+        'images/chambres/familiale-02.png',
+        'images/chambres/familiale-04.png',
+        'images/chambres/familiale-05.png',
+        'images/chambres/familiale-sdb.png',
+      ]
+    },
+  ];
+
+
+  // ── Avis clients ──
+  const reviews = [
+    { author: 'Begimai', stars: 5, text: '« La chambre était d'une propreté impeccable, le personnel accueillant et serviable, et l'emplacement calme et paisible. Je choisirais sans hésiter cet hôtel à nouveau. »', stay: '2 nuits · Avril 2026' },
+    { author: 'Buket',   stars: 5, text: '« Idéalement situé, tout près de l'entrée de Kaleiçi. Il a dépassé mes attentes : très propre, chambre spacieuse, charmant jardin. Si je devais y retourner, je choisirais à nouveau cet hôtel. »', stay: '1 nuit · Avril 2026' },
+    { author: 'Mert',    stars: 5, text: '« Un établissement exceptionnel qui saura vous satisfaire à tous égards. »', stay: '5 nuits · Mai 2026' },
+    { author: 'Leyla',   stars: 5, text: '« Belle architecture, chambres propres, personnel extrêmement poli et serviable. La salle de bain est d'une propreté impeccable. L'eau chaude est disponible à volonté. »', stay: '1 nuit · Décembre 2025' },
+    { author: 'Ismail',  stars: 5, text: '« Emplacement magnifique, niché au cœur de demeures historiques. Chambres très propres et spacieuses. Personnel très poli et attentionné. Je le recommande vivement. »', stay: '1 nuit · Octobre 2025' },
+    { author: 'Izzet',   stars: 4, text: '« Les chambres sont propres et l'hôtel est très bien situé. »', stay: '4 nuits · Août 2025' },
+  ];
+
+  function buildReviews() {
+    const list = document.getElementById('reviews-list');
+    list.innerHTML = '';
+    if (reviews.length === 0) {
+      list.innerHTML = '<p style="color:#aaa;text-align:center;padding:24px">Aucun avis pour le moment.</p>';
+      return;
+    }
+    reviews.forEach((rev, i) => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:#fff;border-radius:12px;padding:20px 24px;margin-bottom:14px;box-shadow:0 2px 12px rgba(139,69,19,0.08);display:flex;gap:20px;align-items:flex-start';
+      const stars = '★'.repeat(rev.stars) + '☆'.repeat(5 - rev.stars);
+      card.innerHTML = `
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+            <strong style="font-size:1rem;color:#1a1008">${rev.author}</strong>
+            <span style="color:#C9A84C;font-size:1.1rem">${stars}</span>
+            <span style="color:#aaa;font-size:0.8rem">${rev.stay}</span>
+          </div>
+          <p id="rev-text-${i}" style="color:#444;font-size:0.9rem;line-height:1.6">${rev.text}</p>
+          <div id="rev-edit-${i}" style="display:none;margin-top:10px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">
+              <div>
+                <label style="font-size:0.75rem;color:#999;display:block;margin-bottom:4px">Auteur</label>
+                <input id="edit-author-${i}" value="${rev.author}" style="width:100%;padding:8px 10px;border:1.5px solid #e8d5b7;border-radius:6px;font-family:Jost,sans-serif" />
+              </div>
+              <div>
+                <label style="font-size:0.75rem;color:#999;display:block;margin-bottom:4px">Séjour</label>
+                <input id="edit-stay-${i}" value="${rev.stay}" style="width:100%;padding:8px 10px;border:1.5px solid #e8d5b7;border-radius:6px;font-family:Jost,sans-serif" />
+              </div>
+            </div>
+            <div style="margin-bottom:8px">
+              <label style="font-size:0.75rem;color:#999;display:block;margin-bottom:4px">Note (étoiles)</label>
+              <select id="edit-stars-${i}" style="padding:8px 10px;border:1.5px solid #e8d5b7;border-radius:6px;font-family:Jost,sans-serif">
+                ${[5,4,3,2,1].map(n => `<option value="${n}" ${n===rev.stars?'selected':''}>${'★'.repeat(n)}</option>`).join('')}
+              </select>
+            </div>
+            <div>
+              <label style="font-size:0.75rem;color:#999;display:block;margin-bottom:4px">Texte de l'avis</label>
+              <textarea id="edit-text-${i}" rows="3" style="width:100%;padding:8px 10px;border:1.5px solid #e8d5b7;border-radius:6px;font-family:Jost,sans-serif;resize:vertical">${rev.text}</textarea>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          <button class="btn-edit" id="btn-rev-edit-${i}" onclick="editReview(${i})">Modifier</button>
+          <button class="btn-save" id="btn-rev-save-${i}" onclick="saveReview(${i})" style="display:none">Enregistrer</button>
+          <button class="btn-cancel" id="btn-rev-cancel-${i}" onclick="cancelReview(${i})" style="display:none">Annuler</button>
+          <button onclick="deleteReview(${i})" style="padding:7px 16px;border-radius:6px;border:1.5px solid #e74c3c;background:none;color:#e74c3c;font-family:Jost,sans-serif;font-size:0.8rem;cursor:pointer" onmouseover="this.style.background='#e74c3c';this.style.color='#fff'" onmouseout="this.style.background='none';this.style.color='#e74c3c'">Supprimer</button>
+          <button onclick="moveReview(${i},-1)" title="Monter" style="padding:5px 12px;border-radius:6px;border:1.5px solid #ccc;background:none;color:#888;cursor:pointer;font-size:0.9rem">↑</button>
+          <button onclick="moveReview(${i},1)" title="Descendre" style="padding:5px 12px;border-radius:6px;border:1.5px solid #ccc;background:none;color:#888;cursor:pointer;font-size:0.9rem">↓</button>
+        </div>
+      `;
+      list.appendChild(card);
+    });
+  }
+
+  function editReview(i) {
+    document.getElementById('rev-text-' + i).style.display = 'none';
+    document.getElementById('rev-edit-' + i).style.display = 'block';
+    document.getElementById('btn-rev-edit-' + i).style.display = 'none';
+    document.getElementById('btn-rev-save-' + i).style.display = 'inline-block';
+    document.getElementById('btn-rev-cancel-' + i).style.display = 'inline-block';
+  }
+
+  function saveReview(i) {
+    reviews[i].author = document.getElementById('edit-author-' + i).value.trim();
+    reviews[i].stay   = document.getElementById('edit-stay-'   + i).value.trim();
+    reviews[i].stars  = parseInt(document.getElementById('edit-stars-' + i).value);
+    reviews[i].text   = document.getElementById('edit-text-'  + i).value.trim();
+    buildReviews();
+  }
+
+  function cancelReview(i) {
+    document.getElementById('rev-text-' + i).style.display = 'block';
+    document.getElementById('rev-edit-' + i).style.display = 'none';
+    document.getElementById('btn-rev-edit-' + i).style.display = 'inline-block';
+    document.getElementById('btn-rev-save-' + i).style.display = 'none';
+    document.getElementById('btn-rev-cancel-' + i).style.display = 'none';
+  }
+
+  function deleteReview(i) {
+    if (!confirm('Supprimer cet avis ?')) return;
+    reviews.splice(i, 1);
+    buildReviews();
+  }
+
+  function addReview() {
+    reviews.unshift({ author: 'Nouveau client', stars: 5, text: 'Texte de l'avis...', stay: '1 nuit · Juin 2026' });
+    buildReviews();
+    editReview(0);
+  }
+
+  function moveReview(i, dir) {
+    const j = i + dir;
+    if (j < 0 || j >= reviews.length) return;
+    [reviews[i], reviews[j]] = [reviews[j], reviews[i]];
+    buildReviews();
+  }
+
+  // Override generateJSON to include reviews
+  const _origGenerateJSON = generateJSON;
+  generateJSON = function() {
+    const config = { prix: {}, photos: {}, reviews: [] };
+    chambres.forEach(ch => {
+      config.prix[ch.id] = ch.prix;
+      config.photos[ch.id] = ch.mainPhoto;
+    });
+    config.reviews = reviews.map(r => ({
+      author: r.author, stars: r.stars, text: r.text, stay: r.stay
+    }));
+    const json = JSON.stringify(config, null, 2);
+    const el = document.getElementById('json-output');
+    el.textContent = json;
+    el.style.display = 'block';
+    document.getElementById('btn-copy').style.display = 'inline-block';
+  };
+  // ── Login ──
+  function checkLogin() {
+    const val = document.getElementById('pwd-input').value;
+    if (val === PASSWORD) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      buildTarifs();
+      buildPhotos();
+      buildReviews();
+    } else {
+      document.getElementById('login-err').style.display = 'block';
+    }
+  }
+  document.getElementById('pwd-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkLogin();
+  });
+  function logout() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('admin-panel').style.display = 'none';
+    document.getElementById('pwd-input').value = '';
+  }
+
+  // ── Tarifs ──
+  function buildTarifs() {
+    const tbody = document.getElementById('tarifs-body');
+    tbody.innerHTML = '';
+    chambres.forEach((ch, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="chambre-name">${ch.nom}</td>
+        <td style="color:#888">${ch.surface}</td>
+        <td>
+          <span class="prix-display" id="prix-display-${i}">${ch.prix}€</span>
+          <input class="prix-input" id="prix-input-${i}" type="number" value="${ch.prix}" min="1" max="9999" />
+        </td>
+        <td>
+          <button class="btn-edit" id="btn-edit-${i}" onclick="editPrix(${i})">Modifier</button>
+          <button class="btn-save" id="btn-save-${i}" onclick="savePrix(${i})">Enregistrer</button>
+          <button class="btn-cancel" id="btn-cancel-${i}" onclick="cancelPrix(${i})">Annuler</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function editPrix(i) {
+    document.getElementById('prix-display-' + i).style.display = 'none';
+    document.getElementById('prix-input-' + i).style.display = 'inline-block';
+    document.getElementById('btn-edit-' + i).style.display = 'none';
+    document.getElementById('btn-save-' + i).style.display = 'inline-block';
+    document.getElementById('btn-cancel-' + i).style.display = 'inline-block';
+    document.getElementById('prix-input-' + i).focus();
+  }
+
+  function savePrix(i) {
+    const val = parseInt(document.getElementById('prix-input-' + i).value);
+    if (isNaN(val) || val < 1) { alert('Prix invalide'); return; }
+    chambres[i].prix = val;
+    document.getElementById('prix-display-' + i).textContent = val + '€';
+    cancelPrix(i);
+  }
+
+  function cancelPrix(i) {
+    document.getElementById('prix-display-' + i).style.display = 'inline';
+    document.getElementById('prix-input-' + i).style.display = 'none';
+    document.getElementById('btn-edit-' + i).style.display = 'inline-block';
+    document.getElementById('btn-save-' + i).style.display = 'none';
+    document.getElementById('btn-cancel-' + i).style.display = 'none';
+  }
+
+  // ── Photos ──
+  function buildPhotos() {
+    const section = document.getElementById('photos-section');
+    section.innerHTML = '';
+    chambres.forEach((ch, ci) => {
+      const block = document.createElement('div');
+      block.className = 'chambre-block';
+      block.innerHTML = `
+        <div class="chambre-header">
+          <h3>${ch.nom}</h3>
+          <span class="tag">${ch.surface} · ${ch.photos.length} photo${ch.photos.length > 1 ? 's' : ''}</span>
+        </div>
+        <div class="chambre-body">
+          <!-- Photo principale -->
+          <div class="photos-label">📌 Photo principale (affichée en premier)</div>
+          <div class="main-photo-zone" id="main-zone-${ci}">
+            <div class="main-photo-frame">
+              <img src="${ch.mainPhoto}" alt="Photo principale" id="main-img-${ci}" />
+              <span class="badge-main">Principal</span>
+            </div>
+            <div class="main-photo-info">
+              <div class="filename" id="main-filename-${ci}">${ch.mainPhoto.split('/').pop()}</div>
+              <div class="actions">
+                <button class="btn-edit" onclick="document.getElementById('upload-${ci}').click()">
+                  ＋ Uploader une nouvelle photo
+                </button>
+              </div>
+              <input type="file" id="upload-${ci}" accept="image/*" style="display:none" onchange="handleUpload(${ci}, event)" />
+            </div>
+          </div>
+          <!-- Autres photos -->
+          <div class="photos-label">📷 Toutes les photos de la chambre — cliquez sur ⭐ pour définir la photo principale</div>
+          <div class="other-photos-grid" id="grid-${ci}"></div>
+        </div>
+      `;
+      section.appendChild(block);
+      buildGrid(ci);
+    });
+  }
+
+  function buildGrid(ci) {
+    const ch = chambres[ci];
+    const grid = document.getElementById('grid-' + ci);
+    grid.innerHTML = '';
+    ch.photos.forEach((src, pi) => {
+      const isMain = src === ch.mainPhoto;
+      const thumb = document.createElement('div');
+      thumb.className = 'photo-thumb' + (isMain ? ' is-main' : '');
+      thumb.title = src.split('/').pop();
+      const fname = src.split('/').pop();
+      thumb.innerHTML = `
+        <div class="thumb-actions">
+          ${!isMain ? `<button class="btn-set-main" onclick="setMain(${ci}, ${pi})" title="Définir comme principale">⭐</button>` : ''}
+        </div>
+        <img src="${src}" alt="${fname}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'90\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23f0e8dc\\'/><text x=\\'50%\\' y=\\'50%\\' text-anchor=\\'middle\\' dy=\\'.3em\\' fill=\\'%23999\\' font-size=\\'11\\'>Photo</text></svg>'" />
+        <div class="thumb-name">${fname}</div>
+      `;
+      grid.appendChild(thumb);
+    });
+  }
+
+  function setMain(ci, pi) {
+    chambres[ci].mainPhoto = chambres[ci].photos[pi];
+    document.getElementById('main-img-' + ci).src = chambres[ci].mainPhoto;
+    document.getElementById('main-filename-' + ci).textContent = chambres[ci].mainPhoto.split('/').pop();
+    buildGrid(ci);
+  }
+
+  function handleUpload(ci, event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const fakeURL = 'images/chambres/' + file.name;
+    chambres[ci].photos.push(fakeURL);
+    alert('Photo "' + file.name + '" ajoutée à la liste.\nN\'oubliez pas d\'uploader également ce fichier dans le dossier images/chambres/ sur GitHub.');
+    buildGrid(ci);
+  }
+
+  // ── JSON Export ──
+  function generateJSON() {
+    const config = {
+      prix: {},
+      photos: {}
+    };
+    chambres.forEach(ch => {
+      config.prix[ch.id] = ch.prix;
+      config.photos[ch.id] = ch.mainPhoto;
+    });
+    const json = JSON.stringify(config, null, 2);
+    const el = document.getElementById('json-output');
+    el.textContent = json;
+    el.style.display = 'block';
+    document.getElementById('btn-copy').style.display = 'inline-block';
+  }
+
+  function copyJSON() {
+    const text = document.getElementById('json-output').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const ok = document.getElementById('copy-ok');
+      ok.style.display = 'inline';
+      setTimeout(() => ok.style.display = 'none', 2500);
+    });
+  }
+</script>
+</body>
+</html>
